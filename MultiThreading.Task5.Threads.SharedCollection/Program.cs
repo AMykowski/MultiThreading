@@ -24,9 +24,11 @@ namespace MultiThreading.Task5.Threads.SharedCollection
             Console.WriteLine();
 
             // feel free to add your code
-            for (int i = 0; i < 10; i++)
+            List<int> numberList = new List<int>();
+            
+            for (int i = 0; i < 5; i++)
             {
-                List<int> numberList = new List<int>();
+                //List<int> numberList = new List<int>();
                 Console.WriteLine($"Iteration: {i + 1}");
                 Task<List<int>> addingTask = new Task<List<int>>(() => AddNumbers(numberList));
                 Task printingTask = new Task(() => PrintCollection(numberList));
