@@ -39,20 +39,20 @@ namespace MultiThreading.Task4.Threads.Join
 
             numberOfThreads = 10;
 
-            ThreadPool.QueueUserWorkItem<int>(CreateThreadFromThreadPool, numberOfThreads, false);
+            ThreadPool.QueueUserWorkItem<int>(CreateThreadPool, numberOfThreads, false);
 
 
             Console.ReadLine();
         }
 
-        private static void CreateThreadFromThreadPool(int number)
+        private static void CreateThreadPool(int number)
         {
             Console.WriteLine(number);
             number -= 1;
             semaphore.Wait();
             if (number > 0)
             {
-                ThreadPool.QueueUserWorkItem<int>(CreateThreadFromThreadPool, number, false);
+                ThreadPool.QueueUserWorkItem<int>(CreateThreadPool, number, false);
                 semaphore.Release();
             }
 
