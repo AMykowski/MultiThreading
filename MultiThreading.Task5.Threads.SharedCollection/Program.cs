@@ -19,6 +19,8 @@ namespace MultiThreading.Task5.Threads.SharedCollection
 
             // feel free to add your code
 
+
+
             Console.ReadLine();
         }
     }

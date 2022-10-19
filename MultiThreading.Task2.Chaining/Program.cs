@@ -30,9 +30,9 @@ namespace MultiThreading.Task2.Chaining
             // feel free to add your code
 
             Task<int[]> task1 = Task.Run(() => CreateArray());
-            Task<int[]> task2 = task1.ContinueWith(x => MultiplyArray(task1.Result));
-            Task<int[]> task3 = task2.ContinueWith(x => SortArray(task2.Result));
-            task3.ContinueWith(x => ArrayAverageValue(task3.Result));
+            Task<int[]> task2 = task1.ContinueWith(x => MultiplyArray(x.Result));
+            Task<int[]> task3 = task2.ContinueWith(x => SortArray(x.Result));
+            task3.ContinueWith(x => ArrayAverageValue(x.Result));
 
             Console.ReadLine();
         }
