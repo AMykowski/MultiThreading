@@ -7,6 +7,7 @@
  */
 
 using System;
+using System.Threading.Tasks;
 using MultiThreading.Task3.MatrixMultiplier.Matrices;
 using MultiThreading.Task3.MatrixMultiplier.Multipliers;
 
@@ -20,8 +21,27 @@ namespace MultiThreading.Task3.MatrixMultiplier
             Console.WriteLine();
 
             const byte matrixSize = 7; // todo: use any number you like or enter from console
-            CreateAndProcessMatrices(matrixSize);
+            const byte matrixSizeParallel = 9;
+
+            Task[] taskArray = new Task[2];
+            taskArray[0] = new Task(() => CreateAndProcessMatrices(matrixSize));
+            taskArray[1] = new Task(() => CreateAndProcessMatricesParallel(matrixSizeParallel));
+
+            Parallel.ForEach(taskArray, task =>
+            {
+                task.Start();
+            });
+
             Console.ReadLine();
+        }
+
+        private static void CreateAndProcessMatricesParallel(byte sizeOfMatrix)
+        {
+            Console.WriteLine("Multiplying...");
+            var firstMatrix = new Matrix(sizeOfMatrix, sizeOfMatrix);
+            var secondMatrix = new Matrix(sizeOfMatrix, sizeOfMatrix);
+            IMatrix resultMatrix = new MatricesMultiplierParallel().Multiply(firstMatrix, secondMatrix);
+            PrintMatrixes(firstMatrix, secondMatrix, resultMatrix);
         }
 
         private static void CreateAndProcessMatrices(byte sizeOfMatrix)
@@ -29,9 +49,12 @@ namespace MultiThreading.Task3.MatrixMultiplier
             Console.WriteLine("Multiplying...");
             var firstMatrix = new Matrix(sizeOfMatrix, sizeOfMatrix);
             var secondMatrix = new Matrix(sizeOfMatrix, sizeOfMatrix);
-
             IMatrix resultMatrix = new MatricesMultiplier().Multiply(firstMatrix, secondMatrix);
+            PrintMatrixes(firstMatrix, secondMatrix, resultMatrix);
+        }
 
+        private static void PrintMatrixes(Matrix firstMatrix, Matrix secondMatrix, IMatrix resultMatrix)
+        {
             Console.WriteLine("firstMatrix:");
             firstMatrix.Print();
             Console.WriteLine("secondMatrix:");
